@@ -70,21 +70,29 @@
     </div>
 
     <script>
-        // 替換為您的 ThingSpeak API URL
+        // 使用提供的 ThingSpeak API URL
         const apiUrl = 'https://api.thingspeak.com/channels/2707640/feeds.json?api_key=V2F0DK0AISXI6LP3&results=2';
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const latestEntry = data.feeds[0];
-                document.getElementById('dataDisplay').innerHTML = `
-                    <p>最新土壤濕度: ${latestEntry.field1} %</p>
-                    <p>澆水狀態: ${latestEntry.field2}</p>
-                `;
-            })
-            .catch(error => {
-                console.error('獲取數據時發生錯誤:', error);
-            });
+        function fetchData() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const latestEntry = data.feeds[0];
+                    document.getElementById('dataDisplay').innerHTML = `
+                        <p>最新土壤濕度: ${latestEntry.field1} %</p>
+                        <p>澆水狀態: ${latestEntry.field2}</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error('獲取數據時發生錯誤:', error);
+                });
+        }
+
+        // 初始數據獲取
+        fetchData();
+
+        // 每 30 秒自動更新數據
+        setInterval(fetchData, 30000);
     </script>
 </body>
 </html>
