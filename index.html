@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧澆水系統</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #a8e0ff, #d0e9ff);
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 40px; /* 增加內邊距 */
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px; /* 增加最大寬度 */
+            width: 90%; /* 自適應寬度 */
+            transition: transform 0.3s;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .plant-selection {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #007BFF;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .data-display {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #555;
+            padding: 10px;
+            border-top: 1px solid #007BFF;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>智慧澆水系統</h1>
+        <div class="plant-selection">
+            <h2>您的植物</h2>
+            <p>蕨類</p>
+            <p><strong>光照:</strong> 大多數蕨類喜歡散射光或陰涼的環境，避免直射陽光。</p>
+        </div>
+        <div class="data-display" id="dataDisplay">
+            <!-- 這裡將顯示從 ThingSpeak 獲取的數據 -->
+        </div>
+        <div class="footer">
+            &copy; 2025 智慧澆水系統
+        </div>
+    </div>
+
+    <script>
+        // 替換為您的 ThingSpeak API URL
+        const apiUrl = 'https://api.thingspeak.com/channels/2677906/feeds.json?results=2';
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const latestEntry = data.feeds[0];
+                document.getElementById('dataDisplay').innerHTML = `
+                    <p>最新土壤濕度: ${latestEntry.field1} %</p>
+                    <p>澆水狀態: ${latestEntry.field2}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('獲取數據時發生錯誤:', error);
+            });
+    </script>
+</body>
+</html>
