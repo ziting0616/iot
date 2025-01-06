@@ -56,7 +56,7 @@
     <div class="container">
         <h1>智慧澆水系統</h1>
         <div class="plant-selection">
-            <h2>您的植物<br><br>蕨類</h2>
+            <h2>您的植物 : 蕨類</h2>
             <p><strong>光照:</strong> 大多數蕨類喜歡散射光或陰涼的環境，避免直射陽光。</p>
         </div>
         <div class="data-display" id="dataDisplay">
@@ -77,8 +77,8 @@
                     if (data && data.feeds && data.feeds.length > 0) { // 檢查資料是否存在
                         const latestEntry = data.feeds[0];
                         document.getElementById('dataDisplay').innerHTML = `
-                            <p>環境溫度: ${latestEntry.field1} %</p>
-                            <p>環境濕度: ${latestEntry.field2}</p>
+                            <p>環境溫度: ${latestEntry.field1} 度</p>
+                            <p>環境濕度: ${latestEntry.field2} 度</p>
                             <p>土壤濕度: ${latestEntry.field3}</p>
                         `;
                     } else {
