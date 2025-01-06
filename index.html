@@ -12,20 +12,16 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #a8e0ff, #d0e9ff);
+            background: linear-gradient(135deg, #b8f0ff, #e0f9ff); 
         }
         .container {
             text-align: center;
             background-color: white;
-            padding: 40px; /* 增加內邊距 */
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            max-width: 600px; /* 增加最大寬度 */
-            width: 90%; /* 自適應寬度 */
-            transition: transform 0.3s;
-        }
-        .container:hover {
-            transform: scale(1.02);
+            max-width: 600px;
+            width: 90%;
         }
         h1 {
             font-size: 50px;
@@ -41,14 +37,14 @@
         }
         .data-display {
             margin-top: 20px;
-            font-size: 1.2em;
+            font-size: 1.4em; /* 小字更大 */
             color: #555;
             padding: 10px;
             border-top: 1px solid #007BFF;
         }
         .footer {
             margin-top: 20px;
-            font-size: 0.9em;
+            font-size: 1.1em; /* 小字更大 */
             color: #777;
         }
     </style>
@@ -62,8 +58,7 @@
             <p><strong>光照:</strong> 大多數蕨類喜歡散射光或陰涼的環境，避免直射陽光。</p>
         </div>
         <div class="data-display" id="dataDisplay">
-            <!-- 這裡將顯示從 ThingSpeak 獲取的數據 -->
-        </div>
+            </div>
         <div class="footer">
             &copy; 2025 智慧澆水系統
         </div>
@@ -77,15 +72,21 @@
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    const latestEntry = data.feeds[0];
-                    document.getElementById('dataDisplay').innerHTML = `
-                        <p>環境溫度: ${latestEntry.field1} %</p>
-                        <p>環境濕度: ${latestEntry.field2}</p>
-                        <p>土壤濕度: ${latestEntry.field3}</p>
-                    `;
+                    if (data && data.feeds && data.feeds.length > 0) { // 檢查資料是否存在
+                        const latestEntry = data.feeds[0];
+                        document.getElementById('dataDisplay').innerHTML = `
+                            <p>環境溫度: ${latestEntry.field1} %</p>
+                            <p>環境濕度: ${latestEntry.field2}</p>
+                            <p>土壤濕度: ${latestEntry.field3}</p>
+                        `;
+                    } else {
+                        document.getElementById('dataDisplay').innerHTML = "<p>無法取得資料。</p>"; // 顯示錯誤訊息
+                        console.error('ThingSpeak API 回傳無效資料:', data);
+                    }
                 })
                 .catch(error => {
                     console.error('獲取數據時發生錯誤:', error);
+                    document.getElementById('dataDisplay').innerHTML = "<p>連線錯誤，無法取得資料。</p>"; // 顯示錯誤訊息
                 });
         }
 
